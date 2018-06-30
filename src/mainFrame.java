@@ -10,18 +10,19 @@ public class mainFrame {
         FileWriter fileWriter = new FileWriter(outputFile);
 
         for (Map.Entry<String, Integer> entry : edges.entrySet()){
-            fileWriter.write(entry.getKey() + "\n");
+            fileWriter.write(entry.getKey() + "\t" + entry.getValue() + "\n");
         }
+        fileWriter.close();
     }
-
 
     public static void outputEdgesWithString(String filepath,Map<String,String> edges) throws IOException {
         File outputFile = new File(filepath);
         FileWriter fileWriter = new FileWriter(outputFile);
 
         for (Map.Entry<String, String> entry : edges.entrySet()){
-            fileWriter.write(entry.getKey() + "\n");
+            fileWriter.write(entry.getKey() + "\t" + entry.getValue() + "\n");
         }
+        fileWriter.close();
     }
 
     public static void main(String[] args) throws IOException {
@@ -31,8 +32,12 @@ public class mainFrame {
         transLinesToNetwork tLN = new transLinesToNetwork();
         tLN.buildStopWordsMap();
         tLN.readCorpus(filepath);
+        outputEdges("word_map.txt",tLN.wordMap);
+        outputEdges("edge_map.txt",tLN.edgeMap);
 
 
+
+        /*
         //删掉其中一些不紧密的边
         deleteEdge dE = new deleteEdge();
         Map<String,String> deCollection = dE.deleteEdge(tLN.wordMap.size(),tLN.edgeMapWithID);

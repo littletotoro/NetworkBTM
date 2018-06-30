@@ -33,6 +33,10 @@ public class transLinesToNetwork {
     Map<String,String> edgeMapWithID = new HashMap<>();
 
     public void readCorpus(String filepath) throws IOException {
+        File outputFile = new File("tokenized_content.txt");
+        FileWriter fileWriter = new FileWriter(outputFile);
+
+
         File inputFile = new File(filepath);
         if (inputFile.exists() && inputFile.isFile()){
             InputStreamReader fileReader = new InputStreamReader(new FileInputStream(inputFile));
@@ -41,28 +45,33 @@ public class transLinesToNetwork {
             int count = 0;
             int lineCount = 0; //增加了行ID的记录
             while((lineTxt = bufferedReader.readLine()) != null){ //读取对应行，并拆分词表和存储边关系
+                String tokenizedLine = "";
                 List<Term> termList = StandardTokenizer.segment(lineTxt);
-                int[] words = new int[termList.size()]; //将句子改写为以词序号的序列
+                ArrayList<Integer> words = new ArrayList<>();
+                //int[] words = new int[termList.size()]; //将句子改写为以词序号的序列
                 for (int i = 0; i < termList.size(); i++){
                     String[] tmp = termList.get(i).toString().split("/");//对hanlp的分词结果进行处理
+                    tokenizedLine += tmp[0] + " ";
                     if ((!wordTypeList.containsKey(tmp[tmp.length-1])) && (!stopWordsList.containsKey(tmp[0]))) {//排除停用词
                         if (wordMap.containsKey(tmp[0])){ //如果该词已有序号
-                            words[i] = wordMap.get(tmp[0]);
+                            words.add(wordMap.get(tmp[0]));
                         }
                         else { //如果该词还没有获得序号
                             wordMap.put(tmp[0],count);
-                            words[i] = count;
+                            words.add(wordMap.get(tmp[0]));
                             count++;
                         }
                     }
 
                 }
+                fileWriter.write(tokenizedLine + "\n");
+
 
                 //存储句子出现的词共现关系
-                for (int i = 0 ; i < words.length - 1; i++){
-                    for (int j = i+1 ; j < words.length ; j++){
-                        if (words[i] != words[j]) {
-                            String edge = words[i] < words[j] ? words[i] + "," + words[j] : words[j] + "," + words[i];
+                for (int i = 0 ; i < words.size() - 1; i++){
+                    for (int j = i+1 ; j < words.size() ; j++){
+                        if (words.get(i) != words.get(j)) {
+                            String edge = words.get(i) < words.get(j) ? words.get(i) + "," + words.get(j) : words.get(j) + "," + words.get(i);
                             if (edgeMap.containsKey(edge)){
                                 edgeMap.put(edge, edgeMap.get(edge) + 1);
                                 edgeMapWithID.put(edge,edgeMapWithID.get(edge)+","+lineCount);
@@ -79,6 +88,7 @@ public class transLinesToNetwork {
             }
             bufferedReader.close();
             fileReader.close();
+            fileWriter.close();
         }
         System.out.println("总词数为 " + wordMap.size() + "。");
         System.out.println("总边数为 " + edgeMap.size() + " 条。");

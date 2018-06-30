@@ -1,9 +1,10 @@
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class deleteEdge {
 
-    public Map<String,String> deleteEdge(int wordsize,Map<String,String> edgeMap){
+    public Map<String,String> deleteEdge(int wordsize,Map<String,String> edgeMap) throws IOException {
         /*
         Map<String,Integer> limitedEdge = new HashMap<>();
         Map<String,Integer> badEdge = new HashMap<>(); //被删除的边
@@ -55,6 +56,7 @@ public class deleteEdge {
             if (!limitedEdge.containsKey(entry.getKey())) badEdge.put(entry.getKey(),entry.getValue());
         }
         System.out.println("被删除的边有 " + badEdge.size() + " 条。");
+        mainFrame.outputEdgesWithString("bad_edges.txt",badEdge);
 
         return limitedEdge;
     }
