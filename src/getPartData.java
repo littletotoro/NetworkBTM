@@ -14,9 +14,9 @@ public class getPartData {
             String lineTxt = null;
             while((lineTxt = bufferedReader.readLine()) != null){
                 double ran = Math.random();
-                if (ran <= 0.05){
+                if (ran <= 0.025){
                     String[] tmp = lineTxt.split("_!_");
-                    contentWriter.write(tmp[3] + "\n");
+                    contentWriter.write(tmp[3] + "\t" + tmp[1] + "\n");
                     labelWriter.write(tmp[1] + "\n");
                 }
 
