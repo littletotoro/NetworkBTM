@@ -39,7 +39,7 @@ public class transLinesToNetwork {
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String lineTxt = null;
             int count = 0;
-            int lineCount = 0;
+            int lineCount = 0; //增加了行ID的记录
             while((lineTxt = bufferedReader.readLine()) != null){ //读取对应行，并拆分词表和存储边关系
                 List<Term> termList = StandardTokenizer.segment(lineTxt);
                 int[] words = new int[termList.size()]; //将句子改写为以词序号的序列
